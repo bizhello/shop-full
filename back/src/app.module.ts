@@ -10,7 +10,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.DATABASE_MONGO),
+    MongooseModule.forRoot('mongodb://mongodb:27017/nestjs'),
     CoreModule,
     ThrottlerModule.forRoot({
       ttl: +process.env.RATE_LIMITING_TTL,
