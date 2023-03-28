@@ -3,6 +3,9 @@ version: '3'
 services:
   frontend:
     build: ./front
+    volumes:
+      - /app/node_modules
+      - ./front:/app
     restart: always
     ports:
       - 3333:3000
@@ -10,6 +13,16 @@ services:
       - ./front/.env
   backend:
     build: ./back
+    volumes:
+      - image:/uploads/images
+      - /app/node_modules
+      - ./back:/app
+    # volumes:
+    #   - type: volume
+    #     source: image
+    #     target: /uploads/images
+    #     volume:
+    #       nocopy: true
     restart: always
     ports:
       - 5555:5000
@@ -19,10 +32,16 @@ services:
       - ./back/.env
   mongo:
     image: mongo
-    restart: always
+    volumes:
+      - mongodata:/data/db
+    restart: unless-stopped
     ports:
       - 27017:27017
     container_name: mongodb
     environment:
       DATABASE_USER: test
       DATABASE_PASSWORD: test
+
+volumes:
+  mongodata:
+  image:

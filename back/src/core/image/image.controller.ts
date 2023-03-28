@@ -31,11 +31,14 @@ export default class ImageController {
     @UploadedFile(new ParseFilePipe())
     file: Express.Multer.File,
   ): Promise<ResUploadImage> {
+    console.log('BEFORE CONVERT')
     const buffer = await this.imageService.convertToWebP(file.buffer);
+    console.log('AFTER CONVERT')
     const newFile = new MFile({
       originalname: `${file.originalname.split('.')[0]}.webp`,
       buffer,
     });
+    console.log('AFTER CREATE NEW FILE')
 
     return this.imageService.uploadImage(param.id, newFile);
   }

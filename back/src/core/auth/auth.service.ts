@@ -23,7 +23,7 @@ export default class AuthService {
     const candidate = await this.userModel.findOne({ email });
 
     if (candidate) {
-      throw new HttpException(MessagesEnum.EMAIL_IS_BUSY, HttpStatus.CONFLICT);
+      throw new HttpException(MessagesEnum.EMAIL_IS_BUSY, HttpStatus.BAD_REQUEST);
     }
 
     const hashPassword = await hash(password, +process.env.SALT_ROUNDS);
@@ -43,7 +43,7 @@ export default class AuthService {
     if (!candidate) {
       throw new HttpException(
         MessagesEnum.DATA_IS_NOT_CORRECT,
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -51,7 +51,7 @@ export default class AuthService {
     if (!match) {
       throw new HttpException(
         MessagesEnum.DATA_IS_NOT_CORRECT,
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.BAD_REQUEST,
       );
     }
 

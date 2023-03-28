@@ -31,7 +31,7 @@ const MainModal = () => {
 
   const handelSave = async () => {
     const formData = new FormData();
-    fileImage && formData.append("image", fileImage, "Image");
+    fileImage && formData.append("image", fileImage, "image");
     if (modalCard.id) {
       const { id, title, dateFrom, dateTo, count } = modalCard;
       try {

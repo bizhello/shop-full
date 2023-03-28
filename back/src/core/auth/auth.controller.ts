@@ -25,7 +25,7 @@ export default class AuthController {
     private readonly tokenService: TokenService,
   ) {}
 
-  @Post('registry')
+  @Post(RoutesEnum.REGISTRY)
   @HttpCode(200)
   public async register(@Body() dto: ReqRegistryDto): Promise<ResRegistryDto> {
     console.log('BODY registry: ', dto)
