@@ -17,7 +17,7 @@ export default class ImageService {
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          redirect: 'follow'
+          "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
         },
       }
     );

@@ -25,9 +25,10 @@ export default class AuthController {
     private readonly tokenService: TokenService,
   ) {}
 
-  @Post(RoutesEnum.REGISTRY)
+  @Post('registry')
   @HttpCode(200)
   public async register(@Body() dto: ReqRegistryDto): Promise<ResRegistryDto> {
+    console.log('BODY registry: ', dto)
     return this.authService.registry(dto);
   }
 
@@ -37,14 +38,15 @@ export default class AuthController {
     @Body() dto: ReqLoginDto,
     @Res({ passthrough: true }) response: Response,
   ): Promise<ResLoginDto> {
+    console.log('BODY login: ', dto)
     const { refreshToken, ...resUser } = await this.authService.login(dto);
 
     if (dto.remember) {
       response.cookie(TextEnum.REFRESH_TOKEN, refreshToken, {
         maxAge: +process.env.MAX_AGE_REFRESH_TOKEN,
-        // httpOnly: true,
-        // secure: true,
-        // sameSite: 'none',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
       });
     }
 
@@ -79,9 +81,9 @@ export default class AuthController {
 
     response.cookie(TextEnum.REFRESH_TOKEN, userInfo.refreshToken, {
       maxAge: +process.env.MAX_AGE_REFRESH_TOKEN,
-      // httpOnly: true,
-      // secure: true,
-      // sameSite: 'none',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
     });
 
     return {

@@ -5,14 +5,14 @@ services:
     build: ./front
     restart: always
     ports:
-      - '3333:3000'
+      - 3333:3000
     env_file:
       - ./front/.env
   backend:
     build: ./back
     restart: always
     ports:
-      - '5555:5000'
+      - 5555:5000
     depends_on:
       - mongo
     env_file:
@@ -20,7 +20,9 @@ services:
   mongo:
     image: mongo
     restart: always
+    ports:
+      - 27017:27017
+    container_name: mongodb
     environment:
-      MONGO_INITDB_DATABASE: nestjs
-      MONGO_INITDB_ROOT_USERNAME: test
-      MONGO_INITDB_ROOT_PASSWORD: test
+      DATABASE_USER: test
+      DATABASE_PASSWORD: test
