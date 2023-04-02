@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import {
   Card,
@@ -7,6 +7,7 @@ import {
   Tooltip,
   CardMedia,
   IconButton,
+  ListItem,
 } from "@material-ui/core";
 import { Add, Minimize } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -15,6 +16,7 @@ import { popupToggleAction } from "../../store/popupReducer";
 import { changeModalCardAction } from "../../store/modalCardReducer";
 import MultiPicker from "../MultiPicker";
 import useStyles from "./style";
+import ImageService from "../../services/ImageService";
 import {
   increment,
   decrement,
@@ -25,8 +27,12 @@ const BeerCard = ({ data }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const dateIsValid = useMemo(() => {
+    const difference = Date.parse(data.dateTo) - Date.now();
+    return difference < 550383924 ? false : true;
+  }, [data.dateTo, data.dateFrom]);
+
   const changeCard = () => {
-    console.log("data: ", data);
     dispatch(
       changeModalCardAction({
         ...data,
@@ -35,22 +41,65 @@ const BeerCard = ({ data }) => {
     dispatch(popupToggleAction());
   };
 
+  const handelDeleteCard = async () => {
+    await ImageService.deleteImageById(data.id);
+    dispatch(deleteCard(data.id));
+  };
+
   return (
-    <Card className={classes.root}>
+    <Card className={dateIsValid ? classes.root : classes.error}>
       <CardMedia
         className={classes.media}
         image={`${process.env.REACT_APP_API_URL}/static/images/${data.id}/image.webp`}
         title="Contemplative Reptile"
       />
-      <Typography
-        gutterBottom
-        variant="h5"
-        component="h2"
-        className={classes.title}
-      >
-        {data.title}
-      </Typography>
-      <MultiPicker data={data} modal={false} />
+      <ListItem className={classes.list}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="h2"
+          className={classes.titleText}
+        >
+          Название
+        </Typography>
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="h6"
+          className={classes.count}
+        >
+          {data.title}
+        </Typography>
+      </ListItem>
+      <ListItem className={classes.list}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="h2"
+          className={classes.titleText}
+        >
+          Цена
+        </Typography>
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="h6"
+          className={classes.count}
+        >
+          {data.price}
+        </Typography>
+      </ListItem>
+      <ListItem className={classes.listDate}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="h2"
+          className={classes.titleTextDate}
+        >
+          Срок годности
+        </Typography>
+        <MultiPicker data={data} modal={false} column={true} />
+      </ListItem>
       <Typography
         gutterBottom
         variant="h6"
@@ -107,7 +156,7 @@ const BeerCard = ({ data }) => {
           <IconButton
             aria-label="delete"
             size="medium"
-            onClick={() => dispatch(deleteCard(data.id))}
+            onClick={() => handelDeleteCard()}
           >
             <DeleteIcon />
           </IconButton>

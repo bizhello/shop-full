@@ -14,15 +14,8 @@ services:
   backend:
     build: ./back
     volumes:
-      - image:/uploads/images
       - /app/node_modules
       - ./back:/app
-    # volumes:
-    #   - type: volume
-    #     source: image
-    #     target: /uploads/images
-    #     volume:
-    #       nocopy: true
     restart: always
     ports:
       - 5555:5000
@@ -44,4 +37,3 @@ services:
 
 volumes:
   mongodata:
-  image:

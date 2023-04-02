@@ -7,7 +7,7 @@ export default class ImageService {
   }
 
   static async deleteImageById(cardId) {
-    return $api.delete(`/image/${cardId}`);
+    return $api.delete(`/images/${cardId}`);
   }
 
   static async createImageById(cardId, body) {

@@ -6,6 +6,8 @@ export default class ResCardDto implements ICardWithId {
 
   public readonly title: string;
 
+  public readonly price: number;
+
   public readonly dateFrom: Date;
 
   public readonly dateTo: Date;

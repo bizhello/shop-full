@@ -18,9 +18,9 @@ export default class CardService {
   public async getCards(): Promise<ICardWithId[]> {
     const cards = await this.cardModel.find();
     const resCards = cards.map((card) => {
-      const { id, title, dateFrom, dateTo, count } = card;
+      const { id, title, price, dateFrom, dateTo, count } = card;
 
-      return { id, title, dateFrom, dateTo, count };
+      return { id, title, price, dateFrom, dateTo, count };
     });
 
     return resCards;
@@ -28,9 +28,9 @@ export default class CardService {
 
   public async createCard(createCardDto: ICard): Promise<ICardWithId> {
     const card = await this.cardModel.create(createCardDto);
-    const { id, title, dateFrom, dateTo, count } = card;
+    const { id, title, price, dateFrom, dateTo, count } = card;
 
-    return { id, title, dateFrom, dateTo, count };
+    return { id, title, price, dateFrom, dateTo, count };
   }
 
   public async deleteCard(id: Types.ObjectId): Promise<{ message: string }> {
@@ -95,8 +95,8 @@ export default class CardService {
         HttpStatus.NOT_FOUND,
       );
     }
-    const { id, title, dateFrom, dateTo, count } = card;
+    const { id, title, price, dateFrom, dateTo, count } = card;
 
-    return { id, title, dateFrom, dateTo, count };
+    return { id, title, price, dateFrom, dateTo, count };
   }
 }

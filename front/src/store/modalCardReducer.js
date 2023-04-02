@@ -5,6 +5,7 @@ const enums = {
 const defaultState = {
   id: null,
   title: "",
+  price: null,
   dateFrom: null,
   dateTo: null,
   count: null,
@@ -22,6 +23,7 @@ const modalCardReducer = (state = defaultState, { type, payload }) => {
         ...state,
         id: null,
         title: "",
+        price: null,
         dateFrom: null,
         dateTo: null,
         count: null,
@@ -31,7 +33,10 @@ const modalCardReducer = (state = defaultState, { type, payload }) => {
   }
 };
 
-export const clearModalCardAction = (payload) => ({ type: enums.CLEAR, payload });
+export const clearModalCardAction = (payload) => ({
+  type: enums.CLEAR,
+  payload,
+});
 export const changeModalCardAction = (payload) => ({
   type: enums.CHANGE,
   payload,

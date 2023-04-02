@@ -9,18 +9,7 @@ import MainModal from "../../Modal";
 import BeerCard from "../../BeerCard";
 import HeaderIsAuth from "../../Header/HeaderIsAuth";
 import { fetchCards } from "../../../store/asyncActions/cards";
-
-const UseStyles = makeStyles((theme) => ({
-  mainContent: {
-    color: theme.palette.common.white,
-    position: "relative",
-    padding: theme.spacing(6),
-  },
-  title: {
-    color: "black",
-    marginTop: "20px",
-  },
-}));
+import UseStyles from "./style";
 
 const Main = () => {
   const classes = UseStyles();
@@ -28,6 +17,11 @@ const Main = () => {
   const popup = useSelector((state) => state.popup);
   const cards = useSelector((state) => state.card.cards);
   const [searchQuarry, setSearchQuarry] = React.useState("");
+  const [cardPopup, setCardPopup] = React.useState(false);
+
+  const toggleCardPopup = () => {
+    setCardPopup((prev) => !prev);
+  };
 
   const getCards = React.useCallback(() => {
     try {
@@ -70,16 +64,24 @@ const Main = () => {
           }}
           variant="filled"
         />
-        <SelectWithButton />
+        <SelectWithButton toggleCardPopup={toggleCardPopup} />
         {sortedCards.length !== 0 ? (
-          sortedCards.map((item) => <BeerCard key={item.id} data={item} />)
+          sortedCards.map((item) => (
+            <BeerCard
+              key={item.id}
+              data={item}
+              toggleCardPopup={toggleCardPopup}
+            />
+          ))
         ) : (
           <Typography variant="h4" className={classes.title}>
             Товар не найден!
           </Typography>
         )}
       </Container>
-      {popup && <MainModal />}
+      {cardPopup && (
+        <MainModal cardPopup={cardPopup} toggleCardPopup={toggleCardPopup} />
+      )}
     </>
   );
 };

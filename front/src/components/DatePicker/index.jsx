@@ -59,7 +59,7 @@ const DatePickers = ({ label, data }) => {
       <TextField
         id="date"
         label={label}
-        type="month"
+        type="date"
         value={getValue()}
         onChange={(e) => changeDate(e)}
         className={classes.textField}
