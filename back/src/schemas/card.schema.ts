@@ -8,6 +8,13 @@ export class Card {
 
   @Prop({
     required: true,
+    type: Number,
+    min: 1,
+  })
+  public price: number;
+
+  @Prop({
+    required: true,
     type: Date,
   })
   public dateFrom: Date;

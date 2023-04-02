@@ -17,6 +17,13 @@ export default class ReqCreateCardDto implements ICard {
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  @IsInt()
+  public readonly price: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @IsDateString({}, { each: true })
   public readonly dateFrom: Date;
 

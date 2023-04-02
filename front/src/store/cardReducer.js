@@ -19,21 +19,13 @@ const cardReducer = (state = defaultState, { type, payload }) => {
       return {
         ...state,
         cards: payload.map((item) => ({
-          // url: `${process.env.REACT_APP_API_URL}/static/images/${item.id}/image.webp`,
-          // url: 'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80',
           ...item,
         })),
       };
     case CARD_ACTION.ADD_CARD:
       return {
         ...state,
-        cards: [
-          ...state.cards,
-          {
-            url: `${process.env.REACT_APP_API_URL}/static/images/${payload.id}/image.webp`,
-            ...payload,
-          },
-        ],
+        cards: [...state.cards, payload],
       };
     case CARD_ACTION.DELETE_CARD:
       return {

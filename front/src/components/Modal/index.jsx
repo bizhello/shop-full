@@ -15,17 +15,14 @@ import MultiPicker from "../MultiPicker";
 import useStyles from "./style";
 import ImageService from "../../services/ImageService";
 
-const MainModal = () => {
-  const [fileImage, setFileImage] = React.useState(null);
-
-  const dispatch = useDispatch();
+const MainModal = ({ cardPopup, toggleCardPopup }) => {
   const classes = useStyles();
-
-  const popup = useSelector((state) => state.popup.popup);
+  const dispatch = useDispatch();
+  const [fileImage, setFileImage] = React.useState(null);
   const modalCard = useSelector((state) => state.modalCard);
 
   const handleClose = () => {
-    dispatch(popupToggleAction());
+    toggleCardPopup();
     dispatch(clearModalCardAction());
   };
 
@@ -33,9 +30,17 @@ const MainModal = () => {
     const formData = new FormData();
     fileImage && formData.append("image", fileImage, "image");
     if (modalCard.id) {
-      const { id, title, dateFrom, dateTo, count } = modalCard;
+      const { id, title, price, dateFrom, dateTo, count } = modalCard;
       try {
-        dispatch(changeCard(id, { title, dateFrom, dateTo, count: +count }));
+        dispatch(
+          changeCard(id, {
+            title,
+            price: +price,
+            dateFrom,
+            dateTo,
+            count: +count,
+          })
+        );
         fileImage && (await ImageService.createImageById(id, formData));
       } catch (error) {
         console.log("ОШИБКА изменения товара");
@@ -43,6 +48,7 @@ const MainModal = () => {
     } else {
       const card = {
         title: modalCard.title,
+        price: +modalCard.price,
         dateFrom: modalCard.dateFrom,
         dateTo: modalCard.dateTo,
         count: +modalCard.count,
@@ -56,13 +62,13 @@ const MainModal = () => {
       }
     }
 
-    dispatch(popupToggleAction());
+    toggleCardPopup();
     dispatch(clearModalCardAction());
   };
 
   return (
     <Modal
-      open={popup}
+      open={cardPopup}
       onClose={handleClose}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
@@ -86,6 +92,14 @@ const MainModal = () => {
             value={modalCard.title}
             onChange={(e) =>
               dispatch(changeModalCardAction({ title: e.target.value }))
+            }
+          />
+          <TextField
+            id="standard-basic"
+            label="Цена товара"
+            value={modalCard.price}
+            onChange={(e) =>
+              dispatch(changeModalCardAction({ price: e.target.value }))
             }
           />
           <MultiPicker modal={true} />
