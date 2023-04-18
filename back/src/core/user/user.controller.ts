@@ -5,6 +5,7 @@ import ResChangeUserDto from '@app/core/user/dto/res/change-user.dto';
 import ResGetUsersDto from '@app/core/user/dto/res/get-user.dto';
 import UserService from '@app/core/user/user.service';
 import AuthGuard from '@app/guards/auth.guard';
+import IExpressRequest from '@app/types/expressRequest.inteface';
 import {
   Body,
   Controller,
@@ -13,12 +14,14 @@ import {
   Param,
   Put,
   UseGuards,
+  Req,
 } from '@nestjs/common';
+import { Types } from 'mongoose';
 
 @UseGuards(new AuthGuard())
 @Controller(RoutesEnum.USERS)
 export default class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get()
   public async getUsers(): Promise<ResGetUsersDto[]> {
@@ -45,5 +48,13 @@ export default class UserController {
     @Param() param: ValidateParamIdDto,
   ): Promise<ResChangeUserDto> {
     return this.userService.getUserById(param.id);
+  }
+
+  @Get('/info/me')
+  public async getInfoAboutMe(
+    @Req() request: IExpressRequest
+  ): Promise<{ id: Types.ObjectId }> {
+
+    return { id: request.userId }
   }
 }
