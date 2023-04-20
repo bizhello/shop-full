@@ -13,10 +13,12 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Query,
   Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
+import ReqGetCardsDto from './dto/req/get-cards.dto';
 
 @UseGuards(new AuthGuard())
 @Controller(RoutesEnum.CARDS)
@@ -24,8 +26,10 @@ export default class CardController {
   constructor(private readonly cardService: CardService) {}
 
   @Get()
-  public async getCards(): Promise<ResCardDto[]> {
-    return this.cardService.getCards();
+  public async getCards(
+    @Query() getCardsDto: ReqGetCardsDto,
+  ): Promise<ResCardDto[]> {
+    return this.cardService.getCards(getCardsDto);
   }
 
   @Post()

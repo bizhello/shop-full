@@ -8,15 +8,19 @@ import { Card, TCardDocument } from '@app/schemas/card.schema';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { IPagination } from './interfaces/IPagination';
 
 @Injectable()
 export default class CardService {
   constructor(
     @InjectModel(Card.name) private cardModel: Model<TCardDocument>,
-  ) {}
+  ) { }
 
-  public async getCards(): Promise<ICardWithId[]> {
-    const cards = await this.cardModel.find();
+  public async getCards({ limit, page }: IPagination): Promise<ICardWithId[]> {
+    const cards = await this.cardModel.find()
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec();
     const resCards = cards.map((card) => {
       const { id, title, price, dateFrom, dateTo, count } = card;
 
