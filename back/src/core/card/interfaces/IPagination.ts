@@ -1,4 +1,4 @@
 export interface IPagination {
-    readonly limit?: number;
-    readonly page?: number;
+    readonly limit?: string;
+    readonly page?: string;
 }

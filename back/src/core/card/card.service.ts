@@ -16,14 +16,14 @@ export default class CardService {
     @InjectModel(Card.name) private cardModel: Model<TCardDocument>,
   ) { }
 
-  public async getCards({ limit, page }: IPagination): Promise<ICardWithId[]> {
+  public async getCards({_limit, _page}: IPagination): Promise<ICardWithId[]> {
     const cards = await this.cardModel.find()
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .exec();
+        .limit(parseInt(_limit, 10) * 1)
+        .skip((parseInt(_page, 10) - 1) * parseInt(_limit, 10))
+        .exec()
+
     const resCards = cards.map((card) => {
       const { id, title, price, dateFrom, dateTo, count } = card;
-
       return { id, title, price, dateFrom, dateTo, count };
     });
 
